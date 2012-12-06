@@ -2,3 +2,4 @@
 *.rar
 *.bsddb
 *.sqlite
+*/media/*

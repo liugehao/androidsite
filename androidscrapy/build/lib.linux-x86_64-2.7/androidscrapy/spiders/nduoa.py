@@ -63,10 +63,10 @@ class NduoaSpider(BaseSpider):
         i['category'] = response.meta['category']
         i['length'] = len(response.body)
         i['path'] = os.path.join(str(response.meta['archiveid']),filename)
-        if response.meta.has_key('redirect_urls'):
-            i['url'] = response.meta['redirect_urls'][0]
-        else:
-            i['url'] = response.url
-        #i['url'] = response.url
+        #if response.meta.has_key('redirect_urls'):
+        #    i['url'] = response.meta['redirect_urls'][0]
+        #else:
+        #    i['url'] = response.url
+        i['url'] = response.url
         return i
 
