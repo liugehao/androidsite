@@ -1,3 +1,6 @@
 eclipse.preferences.version=1
 encoding//androidscrapy/pipelines.py=utf-8
+encoding//androidscrapy/settings.py=utf-8
+encoding//androidscrapy/spiders/android_d_cn.py=utf-8
 encoding//androidscrapy/spiders/nduoa.py=utf-8
+encoding//androidscrapy/spiders/nduoafile.py=utf-8

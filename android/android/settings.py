@@ -45,7 +45,7 @@ USE_TZ = True
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/media/"
-MEDIA_ROOT = '/home/l/workspace/android/media'
+MEDIA_ROOT = '/home/l/workspace/androidsite/android/media'
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
@@ -56,7 +56,7 @@ MEDIA_URL = '/media/'
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
-STATIC_ROOT = '/home/l/workspace/android/static'
+STATIC_ROOT = '/home/l/workspace/androidsite/android/static'
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
@@ -141,16 +141,36 @@ LOGGING = {
     },
     'handlers': {
         'mail_admins': {
-            'level': 'ERROR',
+            'level': 'DEBUG',
             'filters': ['require_debug_false'],
             'class': 'django.utils.log.AdminEmailHandler'
-        }
+        },
     },
     'loggers': {
         'django.request': {
             'handlers': ['mail_admins'],
-            'level': 'ERROR',
+            'level': 'DEBUG',
             'propagate': True,
         },
     }
 }
+
+
+#LOGGING = {
+#    'version': 1,
+#    'disable_existing_loggers': False,
+#    'handlers': {
+#        'console':{
+#            'level':'DEBUG',
+#            'class':'logging.StreamHandler',
+#        },
+#    },
+#    'loggers': {
+#        'django.db.backends': {
+#            'handlers': ['console'],
+#            'propagate': True,
+#            'level':'DEBUG',
+#        },
+#    }
+#}
+

@@ -8,6 +8,7 @@ from scrapy.item import Item, Field
    
 class UpfileItem(Item):
     archive = Field()
-    pic = Field()
+    path = Field()
     length = Field()
     category = Field()
+    url = Field()
