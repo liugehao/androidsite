@@ -4,7 +4,7 @@ from androids.models import Archive, Upfile
 
 
 class UpfileAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('path', 'category', 'length', 'archive')
 
 class UpfileInline(admin.TabularInline):
     model = Upfile
@@ -16,5 +16,5 @@ class ArchiveAdmin(admin.ModelAdmin):
     list_filter = ( 'category',)
     search_fields  = ("id","title",)
 admin.site.register(Archive, ArchiveAdmin)
-admin.site.register(Upfile)
+admin.site.register(Upfile, UpfileAdmin)
 

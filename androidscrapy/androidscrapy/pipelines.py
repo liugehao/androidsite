@@ -20,21 +20,34 @@ class DjangoPipeline(object):
 #        pass
 #    def finalize(self):
 #        print u'完蛋啦，结束了'
-
+    #with DjangoItem
     def process_item(self, item, spider):
-        #if not item.has_key('archive'): return item
-        upfile = Upfile(archive_id=item['archive'],
-        path=item['path'],
-        length=item['length'],
-        category=item['category']
-        )
-        upfile.save()
+        if item.has_key('path'): 
+            item['archive'] = Archive.objects.get(url=item['purl'])
+        item.save()
         return item
-
-        
-#        try:
-#            upfile.save()
-#        except IntegrityError:
-#            #raise DropItem("Contains duplicate domain: %s" % item['pic'])
-#            return item
-        
+""" #without DjangoItem
+    def process_item(self, item, spider):
+        if item.has_key('length'):
+            Upfile(archive=Archive.objects.get(url=item['purl']),
+            path=item['path'],
+            length=item['length'],
+            category=item['category'],
+	        url = item['url']
+            ).save()
+        if item.has_key('star'):
+            Archive(title = item['title'],
+                    version =  item['version'],
+                    category =  item['category'],
+                    star =  item['star'],
+                    androidversion =  item['androidversion'],
+                    screen =  item['screen'],
+                    author =  item['author'],
+                    description =  item['description'],
+                    hits =  item['hits'],
+                    url =  item['url'],
+                    up_dt =  item['up_dt'],
+                    powerconsumption =  item['powerconsumption'],
+                    ).save()
+        return item
+"""

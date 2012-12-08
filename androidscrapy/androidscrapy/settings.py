@@ -10,13 +10,13 @@ import os
 
 
 BOT_NAME = 'androidscrapy'
-BOT_VERSION = '1.0'
-LOG_LEVEL = 'ERROR' #CRITICAL, ERROR, WARNING, INFO, DEBUG
+#BOT_VERSION = '1.0'
+LOG_LEVEL = 'INFO' #CRITICAL, ERROR, WARNING, INFO, DEBUG
 SPIDER_MODULES = ['androidscrapy.spiders']
 NEWSPIDER_MODULE = 'androidscrapy.spiders'
-USER_AGENT = '%s/%s' % (BOT_NAME, BOT_VERSION)
+#USER_AGENT = '%s/%s' % (BOT_NAME, BOT_VERSION)
 ITEM_PIPELINES = ['androidscrapy.pipelines.DjangoPipeline']
-LOG_FILE = './androidscrapy.log'
+#LOG_FILE = './androidscrapy.log'
 #DUPEFILTER_CLASS = 'androidscrapy.RFPDupeFilter.RFPDupeFilter'
 DUPEFILTER_CLASS = 'scrapy.dupefilter.RFPDupeFilter'
 DEPTH_PRIORITY = 1
@@ -24,10 +24,10 @@ SCHEDULER = 'scrapy.core.scheduler.Scheduler'
 SCHEDULER_DISK_QUEUE = 'scrapy.squeue.PickleLifoDiskQueue'
 SCHEDULER_MEMORY_QUEUE = 'scrapy.squeue.LifoMemoryQueue'
 SCHEDULER_PERSIST = True
-DOWNLOAD_DELAY = 6
+DOWNLOAD_DELAY = 0
 DOWNLOAD_TIMEOUT = 7200
-CONCURRENT_REQUESTS = 20
-JOBDIR = '/home/l/workspace/androidsite/androidscrapy' #坑啊，官方手册中没有这个
+CONCURRENT_REQUESTS = 16
+JOBDIR = '/home/l/nfsroot/androidsite/androidscrapy' #坑啊，官方手册中没有这个
 
 def setup_django_env(path):
     import imp, os
