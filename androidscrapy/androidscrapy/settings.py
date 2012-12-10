@@ -1,13 +1,6 @@
 #coding=utf-8
-# Scrapy settings for androidscrapy project
-#
-# For simplicity, this file contains only the most important settings by
-# default. All the other settings are documented here:
-#
-#     http://doc.scrapy.org/topics/settings.html
-#
-import os
 
+import os
 
 BOT_NAME = 'androidscrapy'
 #BOT_VERSION = '1.0'
@@ -24,10 +17,10 @@ SCHEDULER = 'scrapy.core.scheduler.Scheduler'
 SCHEDULER_DISK_QUEUE = 'scrapy.squeue.PickleLifoDiskQueue'
 SCHEDULER_MEMORY_QUEUE = 'scrapy.squeue.LifoMemoryQueue'
 SCHEDULER_PERSIST = True
-DOWNLOAD_DELAY = 0
+DOWNLOAD_DELAY = 4
 DOWNLOAD_TIMEOUT = 7200
-CONCURRENT_REQUESTS = 16
-JOBDIR = '/home/l/nfsroot/androidsite/androidscrapy' #坑啊，官方手册中没有这个
+CONCURRENT_REQUESTS = 20
+JOBDIR = '/home/l/workspace/androidsite/androidscrapy' #坑啊，官方手册中没有这个
 
 def setup_django_env(path):
     import imp, os

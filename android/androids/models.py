@@ -3,10 +3,6 @@ from django.db import models
 from os.path import getsize, join
 from django.conf import settings
 
-# Create your models here.
-#
-#
-
     
 class Archive(models.Model):
     title = models.CharField(u'名称', max_length=100, db_index=True)
