@@ -56,13 +56,19 @@ class NduoaSpider(BaseSpider):
         yield i
         
         for url in hxs.select('//*/div/ul[@class="shotbox"]/li/img/@src').extract():
-            if not self.file_exists(response.url, url, category=1):
+            tmp = self.file_exists(response.url, url, category=1)
+            if tmp == False:
                 yield Request(urljoin(response.url,url), meta=dict(purl=response.url, category=1), callback=self.savefile)
+            else:
+                yield tmp
         
         url = hxs.select('/html/body/div/div[2]/div[2]/div/div/div[2]/div/a[@class="d_pc_normal"]/@href').extract()[0]
-        if not self.file_exists(response.url, url, category=2):
+        tmp = self.file_exists(response.url, url, category=2)
+        if tmp == False:
             yield Request(urljoin(response.url, url), meta=dict(purl=response.url, category=2), callback=self.savefile)
-        
+        else:
+            yield tmp
+            
         url = hxs.select('/html/body/div/div[2]/div/div/div/div[@class="icon"]/img/@src').extract()[0]
         tmp = self.file_exists(response.url, url, category=0)
         if tmp == False:
