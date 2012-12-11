@@ -10,11 +10,22 @@ from android import settings
 import os
 from androidscrapy.items import UpfileItem, ArchiveItem
 import hashlib
-
+from androids.models import Upfile, Archive
+from django.db import transaction
 
 class NduoaSpider(BaseSpider):
     name = 'nduoa'
-    start_urls = ['http://www.nduoa.com/cat2?page=1','http://www.nduoa.com/cat1?page=1']
+    start_urls = ['http://www.nduoa.com/cat2?page=1',
+                'http://www.nduoa.com/cat2?page=2',
+                'http://www.nduoa.com/cat2?page=3',
+                'http://www.nduoa.com/cat2?page=4',
+                'http://www.nduoa.com/cat2?page=5',
+                
+                'http://www.nduoa.com/cat1?page=1'
+                'http://www.nduoa.com/cat1?page=2',
+                'http://www.nduoa.com/cat1?page=3',
+                'http://www.nduoa.com/cat1?page=4',
+                'http://www.nduoa.com/cat1?page=5']
 
     def parse(self, response):
         #yield  Request('http://www.nduoa.com/apk/detail/461863', callback=self.parse_item)
@@ -22,9 +33,10 @@ class NduoaSpider(BaseSpider):
         hxs = HtmlXPathSelector(response)
         for url in hxs.select('//*[@id="main"]/div[2]/div[2]/div[1]/div/ul/li/div[2]/a/@href').extract():
             yield Request(urljoin(response.url, url), callback=self.parse_item)
+        
         for url in hxs.select('//*[@id="pagination"]/a/@href').re('/cat\d+\?&page=\d+'):
             yield Request(urljoin(response.url, url), callback=self.parse)
-            
+        
     def parse_item(self, response):
         hxs = HtmlXPathSelector(response)
 
@@ -44,10 +56,20 @@ class NduoaSpider(BaseSpider):
         yield i
         
         for url in hxs.select('//*/div/ul[@class="shotbox"]/li/img/@src').extract():
-            yield Request(urljoin(response.url,url), meta=dict(purl=response.url, category=1), callback=self.savefile)
-        yield Request(urljoin(response.url, hxs.select('/html/body/div/div[2]/div/div/div/div[@class="icon"]/img/@src').extract()[0]), meta=dict(purl=response.url, category=0), callback=self.savefile)
-        yield Request(urljoin(response.url, hxs.select('/html/body/div/div[2]/div[2]/div/div/div[2]/div/a[@class="d_pc_normal"]/@href').extract()[0]), meta=dict(purl=response.url, category=2), callback=self.savefile)
-
+            if not self.file_exists(response.url, url, category=1):
+                yield Request(urljoin(response.url,url), meta=dict(purl=response.url, category=1), callback=self.savefile)
+        
+        url = hxs.select('/html/body/div/div[2]/div[2]/div/div/div[2]/div/a[@class="d_pc_normal"]/@href').extract()[0]
+        if not self.file_exists(response.url, url, category=2):
+            yield Request(urljoin(response.url, url), meta=dict(purl=response.url, category=2), callback=self.savefile)
+        
+        url = hxs.select('/html/body/div/div[2]/div/div/div/div[@class="icon"]/img/@src').extract()[0]
+        tmp = self.file_exists(response.url, url, category=0)
+        if tmp == False:
+            yield Request(urljoin(response.url, url), meta=dict(purl=response.url, category=0), callback=self.savefile)
+        else:
+            yield tmp
+            
     def savefile(self, response):
         urlhash = hashlib.sha1(response.meta['purl']).hexdigest()
         path = os.path.join(settings.MEDIA_ROOT, urlhash)
@@ -66,4 +88,19 @@ class NduoaSpider(BaseSpider):
         else:
             i['url'] = response.url
         return i
-
+        
+    def file_exists(self, purl, url, category):
+        url = urljoin(purl,url)
+        urlhash = hashlib.sha1(purl).hexdigest()
+        path = os.path.join(settings.MEDIA_ROOT, urlhash)
+        if not os.path.exists(path):  os.mkdir(path)
+        filename = url.split('/')[-1]
+        if os.path.exists(os.path.join(path,filename)):
+            i = UpfileItem()
+            i['length'] = os.path.getsize(os.path.join(path,filename))
+            i['category'] = category 
+            i['purl'] = purl
+            i['url'] = url 
+            i['path'] = os.path.join(urlhash,filename)
+            return i
+        return False

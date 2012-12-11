@@ -11,4 +11,3 @@ class UpfileItem(DjangoItem):
     
 class ArchiveItem(DjangoItem):
     django_model = Archive
-
